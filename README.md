@@ -1,76 +1,172 @@
 # Tool Master
 
-Tool Master, FRP / TTRPG kampanyaları için geliştirilen Android tabanlı bir Dungeon Master / Game Master çalışma alanıdır.
+**Tool Master**, FRP / TTRPG kampanyaları için geliştirilen Android tabanlı bir DM / GM çalışma alanıdır.
 
 > **Sürüm:** 0.1.3  
-> **Durum:** Aktif geliştirme aşamasında  
+> **Durum:** Aktif geliştirme  
 > **Platform:** Android  
 > **Framework:** Flutter  
 > **Dil:** Dart  
 
 ---
 
-## Geliştirme Durumu
+## İndirme
 
-Tool Master şu anda **aktif geliştirme aşamasındadır** ve henüz kararlı `1.0.0` sürümüne ulaşmamıştır.
+GitHub **Releases** bölümünden cihazınıza uygun APK'yı indirin.
 
-Bu nedenle geliştirme sürecinde:
+**Çoğu modern Android telefon ve tablet için:**
 
-- arayüz değişiklikleri,
-- yeni özellikler,
-- hata düzeltmeleri,
-- performans iyileştirmeleri,
-- telefon ve tablet düzeninde değişiklikler
+```text
+app-arm64-v8a-release.apk
+```
 
-yapılabilir.
+Diğerleri:
 
-Kaynak kodu inceleyebilir, kendi ihtiyaçlarınıza göre değiştirebilir ve projeyi kendiniz geliştirebilirsiniz.
+```text
+app-armeabi-v7a-release.apk  → Eski / 32-bit Android cihazlar
+app-x86_64-release.apk       → Genellikle Android emülatörleri
+```
+
+Emin değilseniz **arm64-v8a** sürümünü indirin.
 
 ---
 
-## Geliştirme Ortamı
+## Neler Var?
 
-Tool Master aşağıdaki ortam kullanılarak geliştirilmiştir:
+Tool Master içinde:
+
+- NPC, Monster, Session, Location, Quest, Item, Organization, Lore, Rule, Journal, Handout ve Template kayıtları
+- Wiki link, backlink ve bağlantısız bahsetme sistemi
+- Ağ / graph görünümü
+- Etiketler, klasörler ve özel alanlar
+- Çoklu kasa sistemi
+- Arşiv, yer imi ve sabit kayıtlar
+- Görev merkezi
+- Günlük notlar ve şablonlar
+- JSON içe aktarma
+- Zar masası
+- Initiative ve HP takibi
+- Savaş araçları
+- Oturum kronometresi ve kampanya araçları
+- Telefon ve tablet için ayrı arayüz
+- Aydınlık / karanlık / sistem teması
+- Farklı vurgu renkleri
+
+bulunur.
+
+---
+
+## Nasıl Geliştirildi?
 
 ```text
 IDE          : Android Studio Rabbit 2026.2.1
 Framework    : Flutter
 Dil          : Dart
-Platform     : Android
-Emülatör     : Medium Phone
 Android API  : 37.0
+Emülatör     : Medium Phone API 37.0
 ```
 
-Uygulama geliştirme sürecinde **Medium Phone API 37.0** emülatörü üzerinde simüle edilmiş ve test edilmiştir.
+Uygulama geliştirme sırasında **Medium Phone API 37.0** emülatörü üzerinde test edilmiştir.
 
-Telefon ve tablet görünümü Flutter'ın ekran boyutuna göre çalışan responsive yapı sistemi ile ayrılmıştır.
+Telefon ve tablet görünümü ekran boyutuna göre otomatik seçilir:
+
+```text
+< 600dp   → Telefon
+>= 600dp  → Tablet
+>= 720dp  → Büyük tablet
+```
 
 ---
 
-## Uygulamayı Kendiniz Geliştirebilirsiniz
+## Proje Dosyaları
 
-Tool Master kaynak kodunu indirerek kendi sürümünüzü oluşturabilirsiniz.
-
-Projeyi klonlamak için:
-
-```powershell
-git clone https://github.com/KULLANICI-ADIN/tool-master.git
-cd tool-master
+```text
+tool-master/
+├── lib/
+│   └── main.dart
+├── assets/
+│   ├── branding/
+│   └── fantasy/
+├── android/
+├── pubspec.yaml
+└── README.md
 ```
 
-Paketleri yüklemek için:
+- `lib/main.dart` → uygulamanın ana kodu
+- `pubspec.yaml` → sürüm, paketler ve asset ayarları
+- `assets/branding/` → logo
+- `assets/fantasy/` → FRP ikonları
+- `android/` → Android yapılandırmaları ve launcher icon dosyaları
 
-```powershell
-flutter pub get
+---
+
+## Kullanılan Paketler
+
+Başlıca Flutter paketleri:
+
+```text
+file_selector
+saf
+shared_preferences
+cupertino_icons
 ```
 
-Uygulamayı çalıştırmak için:
+- `file_selector` → dosya seçme
+- `saf` → Android klasör / depolama erişimi
+- `shared_preferences` → küçük ayarlar ve tercihler
 
-```powershell
-flutter run
+---
+
+## Veriler Nerede Tutuluyor?
+
+Tool Master kullanıcı tarafından seçilen klasör altında kendi veri yapısını oluşturur.
+
+Mevcut teknik klasör adı, eski sürümlerle uyumluluk için:
+
+```text
+dmpcsnotebook
 ```
 
-Temiz çalıştırma için:
+olarak korunmaktadır.
+
+Temel yapı:
+
+```text
+dmpcsnotebook/
+├── index.json
+├── app_settings.json
+└── vaults/
+    └── vault_xxx/
+        ├── vault.json
+        └── backup.json
+```
+
+- `index.json` → kasa listesi
+- `vault.json` → ana kasa verisi
+- `backup.json` → yedek
+- `app_settings.json` → bazı uygulama ayarları
+
+---
+
+## Android Güvenlik Uyarısı
+
+Tool Master şu anda **Google Play Store üzerinden dağıtılmamaktadır**.
+
+Bu nedenle Android veya Google Play Protect, manuel kurulan APK için **bilinmeyen / doğrulanmamış uygulama** uyarısı gösterebilir.
+
+Bu uyarı tek başına uygulamanın zararlı olduğu anlamına gelmez.
+
+Geliştirme sırasında APK, geliştirici tarafından **4 farklı antivirüs / güvenlik uygulamasıyla test edilmiş** ve yapılan kontrollerde zararlı yazılım bildirimi alınmamıştır.
+
+Yine de hiçbir güvenlik taraması %100 garanti vermez. APK'yı yalnızca bu projenin resmi **GitHub Releases** bölümünden indirmeniz önerilir.
+
+---
+
+## Kendiniz Geliştirebilirsiniz
+
+Projeyi fork edip kendi sürümünüzü oluşturabilirsiniz.
+
+Çalıştırmak için:
 
 ```powershell
 flutter clean
@@ -81,244 +177,28 @@ flutter run
 Release APK oluşturmak için:
 
 ```powershell
-flutter build apk --release
+flutter build apk --release --split-per-abi
 ```
 
-APK şu klasörde oluşur:
+APK'lar burada oluşur:
 
 ```text
-build/app/outputs/flutter-apk/app-release.apk
-```
-
----
-
-## Android Güvenlik Uyarısı
-
-Tool Master şu anda **Google Play Store üzerinden yayınlanmamaktadır**.
-
-Uygulamanın APK dosyası manuel olarak kurulmaktadır ve Play Store üzerinden dağıtılan, Google tarafından tanınmış bir yayın sürümü değildir.
-
-Bu nedenle Android veya Google Play Protect bazı cihazlarda uygulamayı:
-
-- bilinmeyen kaynaktan gelen uygulama,
-- doğrulanmamış uygulama,
-- daha önce tanınmayan uygulama
-
-olarak işaretleyebilir veya kurulum sırasında güvenlik uyarısı gösterebilir.
-
-> Bu uyarı tek başına uygulamanın zararlı yazılım içerdiği anlamına gelmez.
-
-Play Store dışında dağıtılan APK dosyalarında bu tür uyarılar görülebilir.
-
----
-
-## Güvenlik Testleri
-
-Geliştirme sırasında oluşturulan Tool Master APK dosyası geliştirici tarafından **4 farklı antivirüs / güvenlik uygulamasıyla test edilmiştir**.
-
-Yapılan testlerde zararlı yazılım bildirimi alınmamıştır.
-
-Bununla birlikte hiçbir antivirüs veya güvenlik testi yüzde yüz garanti vermez.
-
-Bu nedenle uygulamanın APK dosyasını yalnızca:
-
-- resmi GitHub deposundan,
-- GitHub Releases bölümünden,
-- geliştiricinin paylaştığı resmi bağlantılardan
-
-indirmeniz önerilir.
-
-Hazır APK kullanmak istemeyen kullanıcılar kaynak kodu indirerek uygulamayı kendi bilgisayarlarında derleyebilirler.
-
----
-
-## Kaynak Koddan APK Derleme
-
-Kaynak koddan APK oluşturmak için:
-
-```powershell
-flutter clean
-flutter pub get
-flutter build apk --release
-```
-
-Derleme tamamlandığında:
-
-```text
-build/app/outputs/flutter-apk/app-release.apk
-```
-
-dosyası oluşacaktır.
-
-Bu yöntem sayesinde kullanıcı uygulamayı doğrudan GitHub'daki kaynak koddan kendisi derleyebilir.
-
----
-
-## Kullanılan Teknolojiler
-
-Tool Master geliştirilirken temel olarak şu teknolojiler kullanılmıştır:
-
-```text
-Flutter
-Dart
-Android Studio
-Android SDK
-Gradle
-Android Emulator
-Material 3
-```
-
----
-
-## Proje Dosya Yapısı
-
-```text
-tool-master/
-│
-├── lib/
-│   └── main.dart
-│
-├── assets/
-│   ├── branding/
-│   │   └── tool_master_logo.png
-│   │
-│   └── fantasy/
-│
-├── android/
-│   └── app/
-│       └── src/
-│           └── main/
-│
-├── pubspec.yaml
-├── README.md
-└── ...
-```
-
-### `lib/main.dart`
-
-Uygulamanın ana Dart kodunu içerir.
-
-Bu dosyada:
-
-- uygulama başlangıcı,
-- telefon arayüzü,
-- tablet arayüzü,
-- tema sistemi,
-- kayıt sistemi,
-- kasa sistemi,
-- JSON sistemi,
-- DM araçları,
-- savaş araçları,
-- wiki link sistemi,
-- arama,
-- ayarlar
-
-gibi ana sistemler bulunmaktadır.
-
-### `pubspec.yaml`
-
-Flutter projesinin:
-
-- sürümünü,
-- bağımlılıklarını,
-- asset klasörlerini,
-- proje bilgilerini
-
-tanımlar.
-
-### `assets/branding/tool_master_logo.png`
-
-Tool Master uygulama logosudur.
-
-### `assets/fantasy/`
-
-Uygulamada kullanılan FRP / fantasy ikonlarını içerir.
-
----
-
-## Telefon ve Tablet Desteği
-
-Tool Master cihaz ekranını otomatik olarak algılar.
-
-```text
-shortestSide < 600dp   → Telefon arayüzü
-shortestSide >= 600dp  → Tablet arayüzü
-shortestSide >= 720dp  → Büyük tablet
-```
-
-Telefon ve tablet aynı veri sistemini kullanır ancak arayüzleri farklıdır.
-
----
-
-## Tema Sistemi
-
-Tool Master şu tema modlarını destekler:
-
-```text
-Sistem
-Karanlık
-Aydınlık
-```
-
-Ayrıca farklı vurgu renkleri seçilebilir.
-
-Örnek:
-
-```text
-Arcane Mavi
-Menekşe
-Derin Turkuaz
-Zümrüt
-Kehribar
-Gül
-Kızıl
-Arduvaz
+build/app/outputs/flutter-apk/
 ```
 
 ---
 
 ## Proje Durumu
 
-Tool Master halen geliştirilmektedir.
+Tool Master henüz `1.0.0` kararlı sürümüne ulaşmamıştır.
 
-```text
-Tool Master
-Version 0.1.3
-Status: Active Development
-```
+Yeni sürümlerde:
 
-Yeni sürümlerde özellikler, tasarım ve uygulama mimarisi değişebilir.
+- hata düzeltmeleri,
+- yeni özellikler,
+- tasarım değişiklikleri,
+- performans iyileştirmeleri
 
----
+yapılabilir.
 
-## Katkıda Bulunma
-
-Projeyi fork ederek kendi değişikliklerinizi yapabilirsiniz.
-
-Önerilen akış:
-
-```text
-Fork
-↓
-Clone
-↓
-Yeni branch oluştur
-↓
-Değişiklik yap
-↓
-Commit
-↓
-Push
-↓
-Pull Request
-```
-
-Hata bildirimleri ve geliştirme önerileri GitHub Issues üzerinden paylaşılabilir.
-
----
-
-## Not
-
-Tool Master bağımsız olarak geliştirilen bir projedir ve şu anda Google Play Store üzerinde yayınlanmış resmi bir mağaza sürümü bulunmamaktadır.
-
-APK dosyasını kullanmadan önce kaynağını doğrulamanız ve mümkünse resmi GitHub Releases bölümünden indirmeniz önerilir.
+Hata ve öneriler için GitHub **Issues**, katkılar için **Pull Request** kullanılabilir.
